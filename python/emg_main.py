@@ -115,13 +115,17 @@ def emgMain(argv):
             sys.exit()
 
     # Initialize logging
-    logging.basicConfig(filename=EMG_LOG_FILE, level=logging.DEBUG,
+    logging.basicConfig(filename=EMG_LOG_FILE, level=logging.DEBUG, filemode="w",
                         format='%(asctime)s - %(message)s', datefmt='%d-%b-%y %H:%M:%S')
 
     logging.info(APPLICATION + " has been succesfuly initialized.")
 
 
     # Open com port
+    if (serPort == "/dev/tty"):
+        logging.error(APPLICATION + " " + serPort + " is invalid serial device!")
+        _exitSafe()
+
     try:
         ser = serial.Serial(serPort, BAUDRATE)
         logging.info(APPLICATION + " serial port " + serPort + " opened.")
@@ -144,7 +148,6 @@ def emgMain(argv):
                 line = ser.readline().strip()
             except Exception as e:
                 pass
-
 
             # Split the string "180,3600,1234" into a list ["180", "3600", "1234"]
             xy_string = line.split(",")
