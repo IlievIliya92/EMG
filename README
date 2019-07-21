@@ -1,3 +1,14 @@
+Run the following commands to make the scripts executable:
 chmod +x emg_configure emg
 
+### Usage ###
+Check for required pytohn packages:
+
 ./emg_configure
+
+Run the application:
+
+./emg -flag [argument]
+      -s  [serial_port] - run the emg application.
+      -v  [data] - visualize data from the default csv file data.
+          [path_to_csv_file] - visualize data from csv file.
