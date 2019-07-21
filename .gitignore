@@ -1,0 +1,3 @@
+python/*.pyc
+python/data/*csv
+python/log/*.log
