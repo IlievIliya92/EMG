@@ -64,10 +64,14 @@ emgSampleCnt = 0
 cntSampleThread = checkSamplesAmount(1, "cntSampleThread")
 serPort = ''
 
-def _emgExitSignHandler(signal, frame):
+def _exitSafe():
     print("Closing " + APPLICATION)
+    #stop all the threads
     cntSampleThread.shutdown()
-    sys.exit(0)
+    sys.exit(1)
+
+def _emgExitSignHandler(signal, frame):
+    _exitSafe()
 signal.signal(signal.SIGINT, _emgExitSignHandler)
 
 def _emgInit():
@@ -77,11 +81,12 @@ def _emgInit():
     if not os.path.isdir(LOG_DIR):
         os.mkdir(LOG_DIR)
 
+    # Start the threads
     cntSampleThread.start()
 
 def _usage():
     print("python emg_main.py -s [--sport] < serial_port >")
-    sys.exit()
+    _exitSafe()
 
 def emgMain(argv):
     global emgSampleCnt
@@ -91,6 +96,8 @@ def emgMain(argv):
     lowcut = 200.0
     highcut = 500.0
     ch_x = []
+
+    _emgInit()
 
     if len(argv) != 2:
         _usage()
@@ -107,8 +114,6 @@ def emgMain(argv):
         else:
             sys.exit()
 
-    _emgInit()
-
     # Initialize logging
     logging.basicConfig(filename=EMG_LOG_FILE, level=logging.DEBUG,
                         format='%(asctime)s - %(message)s', datefmt='%d-%b-%y %H:%M:%S')
@@ -124,9 +129,8 @@ def emgMain(argv):
         logging.error(APPLICATION + " has failed to open the serial port: " + serPort)
         logging.info("Check for available serial connection:")
         logging.info(os.system("dmesg | grep tty"))
-        logging.info(os.system("ls -l /dev/ttyACM*"))
-        logging.info(os.system("ls -l /dev/ttyUSB*"))
-        exit()
+        logging.info(os.system("ls -l " + serPort))
+        _exitSafe()
 
     with open(EMG_DATA, "w") as data:
     	csv_writer= csv.writer(data)
