@@ -1,7 +1,10 @@
 #!/bin/bash
 
 usage () {
-    echo "$0 -s [--sport] < serial_port >"
+    echo "$0 -flag [argument]"
+    echo "      -s  [serial_port] - run the emg application."
+    echo "      -v  [data] - visualize data from the default csv file data."
+    echo "          [path_to_csv_file] - visualize data from csv file."
     exit 1
 }
 
@@ -14,6 +17,10 @@ case "$1" in
         -s)
             cd python
             python emg_main.py $1 $2
+            ;;
+        -v)
+            cd python
+            python emg_visualize.py $1 $2
             ;;
         *)
             usage

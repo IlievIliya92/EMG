@@ -3,6 +3,10 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import csv
+import sys
+import getopt
+
+from emg_constants import *
 
 plt.style.use('ggplot')
 
@@ -58,3 +62,36 @@ def emg_visualizeDataPlt(datafile):
     plt.ylabel('Sample Value')
     plt.show()
 
+def _usage():
+    print("python emg_visualize.py -v [--visualize] < data_file.csv > / < data > (default)")
+    sys.exit()
+
+def emgVisualizeMain(argv):
+
+    if len(argv) != 2:
+        _usage()
+
+    try:
+        opts, args = getopt.getopt(argv,"hv:", ["sp="])
+    except getopt.GetoptError:
+        _usage()
+    for opt, arg in opts:
+        if opt == '-h':
+            _usage()
+        elif opt in ("-v", "--visualize"):
+            datafile = arg
+        else:
+            sys.exit()
+
+    if datafile is None or datafile == "data":
+        datafile = EMG_DATA
+
+    print("Visualizing: " + datafile)
+    try:
+        emg_visualizeDataPlt(datafile)
+    except Exception as e:
+        print("Failed to visualize data from: " + datafile)
+        sys.exit()
+
+if __name__ == "__main__":
+    emgVisualizeMain(sys.argv[1:])

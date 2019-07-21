@@ -57,7 +57,6 @@ class checkSamplesAmount(threading.Thread):
             print("Sample target of {} reached stopping {}.".format(emgSampleCnt, APPLICATION))
             self.shutdown()
         if self.iterations >= ALLOWED_EMPTY_ITTERATIONS:
-            logging.warning(APPLICATION + " clossing the application due to absence of input data.")
             print("No input samples detected!")
             print("Running serial connection check ...")
             subprocess.Popen("python emg_test_serial.py -s {} -i {}".format(serPort, TEST_ITERATIONS),
@@ -175,7 +174,6 @@ def emgMain(argv):
                     logging.error(APPLICATION +
                                  " discarting invalid data - " + str(e))
                     continue
-    #emg_visualizeDataPlt(EMG_DATA)
 
 if __name__ == "__main__":
     emgMain(sys.argv[1:])
