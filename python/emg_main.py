@@ -18,11 +18,6 @@ from emg_constants import *
 from emg_visualize import *
 from emg_filters import *
 
-# Initialize logging
-logging.basicConfig(filename=EMG_LOG_FILE, filemode='w',
-                    level=logging.INFO,
-                    format='%(asctime)s - %(message)s', datefmt='%d-%b-%y %H:%M:%S')
-
 class checkSamplesAmount(threading.Thread):
     def __init__(self, threadID, name):
         threading.Thread.__init__(self)
@@ -82,20 +77,16 @@ def _emgInit():
     if not os.path.isdir(LOG_DIR):
         os.mkdir(LOG_DIR)
 
-    logging.info(APPLICATION + " has been succesfuly initialized.")
-
     cntSampleThread.start()
 
 def _usage():
     print("python emg_main.py -s [--sport] < serial_port >")
     sys.exit()
 
-
 def emgMain(argv):
     global emgSampleCnt
     global serPort
     # Filter configuration
-
     fs = 1000.0 # in Hz
     lowcut = 200.0
     highcut = 500.0
@@ -116,18 +107,26 @@ def emgMain(argv):
         else:
             sys.exit()
 
+    _emgInit()
+
+    # Initialize logging
+    logging.basicConfig(filename=EMG_LOG_FILE, level=logging.DEBUG,
+                        format='%(asctime)s - %(message)s', datefmt='%d-%b-%y %H:%M:%S')
+
+    logging.info(APPLICATION + " has been succesfuly initialized.")
+
+
     # Open com port
     try:
         ser = serial.Serial(serPort, BAUDRATE)
         logging.info(APPLICATION + " serial port " + serPort + " opened.")
     except Exception as e:
         logging.error(APPLICATION + " has failed to open the serial port: " + serPort)
-        logging.warning("Check for available serial connection:")
+        logging.info("Check for available serial connection:")
+        logging.info(os.system("dmesg | grep tty"))
         logging.info(os.system("ls -l /dev/ttyACM*"))
         logging.info(os.system("ls -l /dev/ttyUSB*"))
         exit()
-
-    _emgInit()
 
     with open(EMG_DATA, "w") as data:
     	csv_writer= csv.writer(data)
@@ -140,15 +139,13 @@ def emgMain(argv):
             try:
                 line = ser.readline().strip()
             except Exception as e:
-                logging.error(APPLICATION +
-                              " failed to read data from serial port: " + str(e))
+                pass
 
 
             # Split the string "180,3600,1234" into a list ["180", "3600", "1234"]
             xy_string = line.split(",")
             if len(xy_string) != 2:
-                logging.error(APPLICATION +
-                              " has received invalid input: " + line)
+                pass
                 writeData = False
 
             if writeData:

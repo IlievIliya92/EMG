@@ -7,13 +7,8 @@ import getopt
 
 from emg_constants import *
 
-# Initialize logging
-logging.basicConfig(filename=EMG_LOG_FILE_TEST_SERIAL, filemode='w',
-                    level=logging.INFO,
-                    format='%(asctime)s - %(message)s', datefmt='%d-%b-%y %H:%M:%S')
-
 def _usage():
-    print("python emg_test_serial.py -s [--sport] < serial_port >")
+    print("python emg_test_serial.py -s [--sport] < serial_port > -i < itterations >")
     sys.exit()
 
 def _emgExitTestSignHandler(signal, frame):
@@ -22,6 +17,11 @@ def _emgExitTestSignHandler(signal, frame):
 signal.signal(signal.SIGINT, _emgExitTestSignHandler)
 
 def emgTestSerial(argv):
+    # Initialize logging
+    logging.basicConfig(filename=EMG_LOG_FILE_TEST_SERIAL, filemode='w',
+                        level=logging.DEBUG,
+                        format='%(asctime)s - %(message)s', datefmt='%d-%b-%y %H:%M:%S')
+
     if len(argv) != 4:
         _usage()
 
@@ -65,7 +65,7 @@ def emgTestSerial(argv):
             line = ser.readline().strip()
             print(str(iterations_cnt) + " : " + line)
             logging.info(TEST_APPLICATION +
-                         "Data {} : {}".format(iterations_cnt, line))
+                         " Data {} : {}".format(iterations_cnt, line))
         except Exception as e:
             pass
 
