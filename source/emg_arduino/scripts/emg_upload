@@ -1,0 +1,17 @@
+#!/bin/bash
+
+usage(){
+  echo "./avr_upload <arduino_serial_device>"
+  echo "Example usage:"
+  echo "./avr_upload /dev/ttyACM0"
+  exit
+}
+
+if [ -z "$1" ]
+  then
+  usage
+fi
+
+cd ${AVR_PROJECT_ROOT}/Debug
+avrdude -patmega328p -carduino -P$1 -D -Uflash:w:avr.hex:i
+#minicom -D $1

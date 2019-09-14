@@ -1,0 +1,94 @@
+#!/bin/bash
+
+install_package() {
+    printf "\nDo you want to install the package $1 ? [y/n]\n"
+    while : ; do
+    read -n 1 k <&1
+    if [[ $k = q ]] ; then
+    printf "\nQuitting from the program\n"
+    break
+    elif [[ $k = y ]] ; then
+    printf "\Instaling the required package $1\n"
+    sudo pip install $1
+    break
+    else
+    printf "\nQuitting from the program\n"
+    break
+    fi
+    done
+}
+
+printf "\n Checking for installed required packages:\n\n"
+
+if python -c 'import csv;'; then
+    echo '[+] csv found'
+else
+    echo 'csv not found'
+    install_package "python-csv"
+    exit
+fi
+
+if python -c 'import logging;'; then
+    echo '[+] logging found'
+else
+    echo 'logging not found'
+    install_package "logging"
+    exit
+fi
+
+if python -c 'import serial;'; then
+    echo '[+] serial found'
+else
+    echo 'serial not found'
+    install_package "pyserial"
+    exit
+fi
+
+if python -c 'import threading;'; then
+    echo '[+] thread found'
+else
+    echo 'threaded not found'
+    install_package "threaded"
+    exit
+fi
+
+
+if python -c 'import numpy;'; then
+    echo '[+] numpy found'
+else
+    echo 'numpy not found'
+    install_package "numpy"
+    exit
+fi
+
+if python -c 'import matplotlib;'; then
+    echo '[+] matplotlib found'
+else
+    echo 'matplotlib not found'
+    install_package "matplotlib"
+    exit
+fi
+
+if python -c 'import scipy;'; then
+    echo '[+] scipy found'
+else
+    echo 'scipy not found'
+    install_package "scipy"
+    exit
+fi
+
+
+if python -c 'import math;'; then
+    echo '[+] math found'
+else
+    echo 'math not found'
+    install_package "mathematics"
+    exit
+fi
+
+echo ""
+echo " All the required packages are installed.
+     "
+echo " Run the application using the following command:
+     "
+echo "./emg -s <serial port>"

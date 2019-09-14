@@ -1,3 +1,5 @@
 python/*.pyc
 python/data/*csv
 python/log/*.log
+source/emg_arduino/Debug/
+source/emg_arduino/Release

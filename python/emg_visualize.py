@@ -25,7 +25,7 @@ def emg_visualizeCH(chdata):
     line1 = emg_visualizeDataLive(x_vec, y_vec, line1, "Channel 0")
     y_vec = np.append(y_vec[1:], 0.0)
 
-def emg_visualizeDataLive(x_vec, y1_data, line1, identifier='', pause_time=0.1):
+def emg_visualizeDataLive(x_vec, y1_data, line1, identifier='', pause_time=0.0001):
     if line1==[]:
         plt.ion()
         fig = plt.figure(figsize=(13,6))
