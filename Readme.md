@@ -6,11 +6,11 @@
 
 ### Prerequisites
 
-⋅⋅* Run the following command to install required packages:
+* Run the following command to install required packages:
 
     sudo apt install cmake gcc-avr avr-libc avrdude python-tk
 
-⋅⋅* Run the following commands to make the scripts executable:
+* Run the following commands to make the scripts executable:
 
     chmod +x emg_configure emg emg_check_requirements
 
