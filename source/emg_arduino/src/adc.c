@@ -3,6 +3,7 @@
 
 #include "freeRTOS/FreeRTOS.h"
 #include "freeRTOS/semphr.h"
+#include "freeRTOS/queue.h"
 
 /* serial interface include file. */
 #include "freeRTOS/lib_io/serial.h"
@@ -12,31 +13,49 @@
 /******************************** LOCAL DEFINES *******************************/
 
 
-
 /******************************** GLOBALDATA *******************************/
 extern xComPortHandle xSerialPort;
 
 /********************************* LOCAL DATA *********************************/
-static xADCArray adcValues;
 static SemaphoreHandle_t xADCSemaphore;
+static xADCArray adcValues;
 
 /******************************* INTERFACE DATA *******************************/
+QueueHandle_t xAdcQueue = NULL;
 
+/************************ LOCAL FUNCTIONS PROTOTYPES***************************/
 
 /******************************* LOCAL FUNCTIONS ******************************/
+
 static void adc_Init(void)
 {
     /* Initialize analog inputs */
     enbAnalogInput(analogIn0);
     enbAnalogInput(analogIn1);
 
+    /* Initialize adc values to 0 */
+    adcValues.adc0 = 0;
+    adcValues.adc1 = 0;
+
+    /* Initialize msg Queue */
+    xAdcQueue = xQueueCreate(5, sizeof(uint32_t));
+
     vSemaphoreCreateBinary(xADCSemaphore);
+
+    return;
+}
+
+static void adc_printResults(xADCArray *adcValues)
+{
+    avrSerialPrintf("\r\n%u, %u\r\n", adcValues->adc0, adcValues->adc1);
 
     return;
 }
 
 static void adc_readSensors(void)
 {
+    uint32_t adcDataMsg = 0;
+    const TickType_t xBlockTime = pdMS_TO_TICKS(200);
 
     if( xADCSemaphore != NULL )
     {
@@ -44,22 +63,23 @@ static void adc_readSensors(void)
         {
             setAnalogMode(MODE_10_BIT);    // 10-bit analogue-to-digital conversions
 
-            adcValues.adc0 = 0;
-            adcValues.adc1 = 0;
-
             startAnalogConversion(analogIn0, EXTERNAL_REF);   // start next conversion
             while(analogIsConverting())
-                _delay_loop_2(25);
+                _delay_loop_2(5);
 
             adcValues.adc0 = analogConversionResult();
 
             startAnalogConversion(analogIn1, EXTERNAL_REF);
             while(analogIsConverting())
-                 _delay_loop_2(25);
+                 _delay_loop_2(5);
 
             adcValues.adc1 = analogConversionResult();
 
-            avrSerialPrintf("\r\n%u, %u\r\n", adcValues.adc0, adcValues.adc1);
+            adc_printResults(&adcValues);
+
+            /* Send indication to led task */
+            xQueueSend(xAdcQueue, &adcDataMsg, xBlockTime);
+
             xSemaphoreGive(xADCSemaphore);
         }
     }
@@ -89,7 +109,9 @@ genericTask_t adc = {
     adc_Task,
     "ADC TASK",
     256,
-    1
+    1,
+    &adcValues,
+    NULL
 };
 
 genericTask_t *getAdcTask(void)

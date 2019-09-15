@@ -19,7 +19,7 @@
 static void rtos_createTask(genericTask_t *task)
 {
     xTaskCreate(task->runTask, (const portCHAR *)task->name,
-                task->stackDepth, NULL, task->priority, NULL );
+                task->stackDepth, task->args, task->priority, NULL );
 
     return;
 }
