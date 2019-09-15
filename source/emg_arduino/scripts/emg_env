@@ -6,4 +6,4 @@ export PREFIX
 PATH=$PATH:$PREFIX/bin
 export PATH
 
-export AVR_PROJECT_ROOT=$(pwd)
+export EMG_PROJECT_ROOT=$(pwd)
