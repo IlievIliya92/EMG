@@ -1,5 +1,9 @@
 ## EMG Project
 
+### Clone the repository
+
+**git clone https://github.com/IlievIliya92/EMG.git**
+
 ### Prerequisites
 
 Run the following command to install required packages:
