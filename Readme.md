@@ -3,9 +3,11 @@
 ### Prerequisites:
 
 Run the following command to install required packages:
+
     sudo apt install cmake gcc-avr avr-libc avrdude python-tk
 
 Run the following commands to make the scripts executable:
+
     chmod +x emg_configure emg emg_check_requirements
 
 ### 1. Check for required python packages:
@@ -32,8 +34,4 @@ that the sampliing of the channels is working properly.
 ### Usage
 Run the emg application:
 
-./emg -flag [argument]
-
-      -h  - see options.
-      -s  [serial_port] - run the emg application.
-      -v  [data] - visualize data from the csv file.
+    ./emg -s [serial_port]
