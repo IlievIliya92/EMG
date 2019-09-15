@@ -2,17 +2,17 @@
 
 ### Clone the repository
 
-**git clone https://github.com/IlievIliya92/EMG.git**
+    git clone https://github.com/IlievIliya92/EMG.git
 
 ### Prerequisites
 
-Run the following command to install required packages:
+⋅⋅* Run the following command to install required packages:
 
-**sudo apt install cmake gcc-avr avr-libc avrdude python-tk**
+    sudo apt install cmake gcc-avr avr-libc avrdude python-tk
 
-Run the following commands to make the scripts executable:
+⋅⋅* Run the following commands to make the scripts executable:
 
-**chmod +x emg_configure emg emg_check_requirements**
+    chmod +x emg_configure emg emg_check_requirements
 
 ### 1. Check for required python packages
     ./emg_check_requirements
