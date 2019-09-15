@@ -16,17 +16,25 @@
 /******************************* LOCAL FUNCTIONS ******************************/
 
 /***************************** INTERFACE FUNCTIONS ****************************/
-void rtos_start(void)
+static void rtos_createTask(genericTask_t *task)
 {
-    vTaskStartScheduler();
+    xTaskCreate(task->runTask, (const portCHAR *)task->name,
+                task->stackDepth, NULL, task->priority, NULL );
 
     return;
 }
 
-void rtos_createTask(genericTask_t *task)
+
+void rtos_start(genericTask_t *task[])
 {
-    xTaskCreate(task->runTask, (const portCHAR *)task->name,
-                task->stackDepth, NULL, task->priority, NULL );
+    int i = 0;
+
+    for (i = 0; i < TASKS; i++) {
+        task[i]->initTask();
+        rtos_createTask(task[i]);
+    }
+
+    vTaskStartScheduler();
 
     return;
 }

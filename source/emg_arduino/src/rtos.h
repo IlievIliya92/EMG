@@ -9,12 +9,12 @@ extern "C" {
 #include "generic_t.h"
 
 /*********************************** DEFINES **********************************/
+#define TASKS   1
 
 /************************** INTERFACE DATA DEFINITIONS ************************/
 
 /************************* INTERFACE FUNCTION PROTOTYPES **********************/
-void rtos_start(void);
-void rtos_createTask(genericTask_t *task);
+void rtos_start(genericTask_t *task[]);
 
 #ifdef __cplusplus
 }

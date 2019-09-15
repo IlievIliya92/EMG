@@ -6,7 +6,9 @@
 #include "rtos.h"
 
 /******************************** LOCAL DEFINES *******************************/
-
+#define BAUDRATE        115200
+#define TX_QUEUE_LEN    10
+#define RX_QUEUE_LEN    10
 
 /******************************** GLOBALDATA *******************************/
 extern xComPortHandle xSerialPort;
@@ -15,26 +17,20 @@ extern xComPortHandle xSerialPort;
 
 /******************************* LOCAL FUNCTIONS ******************************/
 
-
 /***************************** MAIN  ****************************/
 int main(void) __attribute__((OS_main));
 int main(void)
 {
-    genericTask_t *adc;
+    xSerialPort = xSerialPortInitMinimal(USART0, BAUDRATE, TX_QUEUE_LEN, RX_QUEUE_LEN);
+    avrSerialxPrint_P(&xSerialPort, PSTR("\r\n\n\nApllication Started Succesfuly!\r\n"));
 
-    xSerialPort = xSerialPortInitMinimal( USART0, 115200, 10, 10);
-    avrSerialxPrint_P( &xSerialPort, PSTR("\r\n\n\nApllication Started Succesfuly!\r\n"));
+    /* Tasks array */
+    genericTask_t *rtosTasks[TASKS];
 
-    adc = getAdcTask();
+    rtosTasks[0] = getAdcTask();
 
-    /* Initialize tasks */
-    adc->initTask();
+    /* Starts all the tasks from Tasks array & starts the scheduler */
+    rtos_start(rtosTasks);
 
-    /* Start tasks */
-    rtos_createTask(adc);
-
-    /* Start the OS scheduler */
-    rtos_start();
-
-    avrSerialxPrint_P( &xSerialPort, PSTR("\r\n\n Application failed... no space for idle task!\r\n"));
+    avrSerialxPrint_P(&xSerialPort, PSTR("\r\n\n Application failed... no space for idle task!\r\n"));
 }
