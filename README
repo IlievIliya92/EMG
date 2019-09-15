@@ -1,20 +1,27 @@
+Prerequisites:
+
+sudo apt install cmake gcc-avr avr-libc avrdude python-tk
+
 Run the following commands to make the scripts executable:
-chmod +x emg_configure emg
+chmod +x emg_configure emg emg_check_requirements
+
+1. Check for required python packages:
+./emg_check_requirements
+
+2. Configure the project.
+source emg_configure
+
+3. Build the project
+emg_build
+
+4. Upload to the target
+emg_upload [name_of_the_serial_device]
 
 ### Usage ###
-Check for required python packages:
-
-./emg_configure
-
-Run the application:
+Run the emg application:
 
 ./emg -flag [argument]
+
       -h  - see options.
       -s  [serial_port] - run the emg application.
-      -v  [data] - visualize data from the default csv file data.
-          [path_to_csv_file] - visualize data from csv file.
-
-Example usage:
-./emg_configure
-./emg -s /dev/tty<name of your serial device>
-
+      -v  [data] - visualize data from the csv file.
