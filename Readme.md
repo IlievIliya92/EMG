@@ -2,17 +2,17 @@
 
 ### Prerequisites:
 
-    Run the following command to install required packages:
-**sudo apt install cmake gcc-avr avr-libc avrdude python-tk**
+Run the following command to install required packages:
+    sudo apt install cmake gcc-avr avr-libc avrdude python-tk
 
-    Run the following commands to make the scripts executable:
-**chmod +x emg_configure emg emg_check_requirements**
+Run the following commands to make the scripts executable:
+    chmod +x emg_configure emg emg_check_requirements
 
 ### 1. Check for required python packages:
-**./emg_check_requirements**
+    ./emg_check_requirements
 
 ### 2. Configure the project.
-**source emg_configure**
+    source emg_configure
 
 ### 3. Connect the board using this schematic:
 
@@ -21,16 +21,16 @@ Emg-Arduino Schematic:
  "Emg Arduino schemtaic")
 
 ### 4. Build the project
-**emg_build**
+    emg_build
 
 ### 5. Upload to the target
-**emg_upload [name_of_the_serial_device]**
+    emg_upload [name_of_the_serial_device]
 
-    The "L" debug led on the board should start blinking. Indicating
+The "L" debug led on the board should start blinking. Indicating
 that the sampliing of the channels is working properly.
 
 ### Usage
-    Run the emg application:
+Run the emg application:
 
 ./emg -flag [argument]
 
