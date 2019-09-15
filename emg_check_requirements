@@ -25,7 +25,6 @@ if python -c 'import csv;'; then
 else
     echo 'csv not found'
     install_package "python-csv"
-    exit
 fi
 
 if python -c 'import logging;'; then
@@ -33,7 +32,6 @@ if python -c 'import logging;'; then
 else
     echo 'logging not found'
     install_package "logging"
-    exit
 fi
 
 if python -c 'import serial;'; then
@@ -41,7 +39,6 @@ if python -c 'import serial;'; then
 else
     echo 'serial not found'
     install_package "pyserial"
-    exit
 fi
 
 if python -c 'import threading;'; then
@@ -49,7 +46,6 @@ if python -c 'import threading;'; then
 else
     echo 'threaded not found'
     install_package "threaded"
-    exit
 fi
 
 
@@ -58,7 +54,6 @@ if python -c 'import numpy;'; then
 else
     echo 'numpy not found'
     install_package "numpy"
-    exit
 fi
 
 if python -c 'import matplotlib;'; then
@@ -66,7 +61,6 @@ if python -c 'import matplotlib;'; then
 else
     echo 'matplotlib not found'
     install_package "matplotlib"
-    exit
 fi
 
 if python -c 'import scipy;'; then
@@ -74,7 +68,6 @@ if python -c 'import scipy;'; then
 else
     echo 'scipy not found'
     install_package "scipy"
-    exit
 fi
 
 
@@ -83,7 +76,6 @@ if python -c 'import math;'; then
 else
     echo 'math not found'
     install_package "mathematics"
-    exit
 fi
 
 echo ""
