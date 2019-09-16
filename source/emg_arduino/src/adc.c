@@ -45,16 +45,8 @@ static void adc_Init(void)
     return;
 }
 
-static void adc_printResults(xADCArray *adcValues)
-{
-    avrSerialPrintf("\r\n%u, %u\r\n", adcValues->adc0, adcValues->adc1);
-
-    return;
-}
-
 static void adc_readSensors(void)
 {
-    uint32_t adcDataMsg = 0;
     const TickType_t xBlockTime = pdMS_TO_TICKS(200);
 
     if( xADCSemaphore != NULL )
@@ -75,10 +67,8 @@ static void adc_readSensors(void)
 
             adcValues.adc1 = analogConversionResult();
 
-            adc_printResults(&adcValues);
-
             /* Send indication to led task */
-            xQueueSend(xAdcQueue, &adcDataMsg, xBlockTime);
+            xQueueSend(xAdcQueue, &adcValues, xBlockTime);
 
             xSemaphoreGive(xADCSemaphore);
         }

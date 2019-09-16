@@ -14,45 +14,74 @@
 
 /******************************** LOCAL DEFINES *******************************/
 
+/******************************** TYPEDEFS ************************************/
+typedef eSystemState (*pfEventHandler)(void);
+
+typedef enum {
+    Idle_State,
+    last_State
+}eSystemState;
+
+typedef enum {
+    last_Event
+} eSystemEvent;
+
+typedef struct
+{
+    eSystemState eStateMachine;
+    eSystemEvent eStateMachineEvent;
+    pfEventHandler pfStateMachineEvnentHandler;
+} sStateMachine;
 
 /******************************** GLOBALDATA *******************************/
+extern xComPortHandle xSerialPort;
 
 /********************************* LOCAL DATA *********************************/
+static eSystemState eNextState;
+static eSystemEvent eNewEvent;
 
 /******************************* INTERFACE DATA *******************************/
-
 
 /************************ LOCAL FUNCTIONS PROTOTYPES***************************/
 
 /******************************* LOCAL FUNCTIONS ******************************/
-static void led_Init(void)
+sStateMachine asStateMachine [] = {
+    {}
+};
+
+static eSystemEvent fsm_readEvent(xADCArray *adcValues)
 {
-    /* Set as output */
-    DDRB |= _BV(DDB5);
+    return Idle_State;
+}
+
+static void fsm_Init(void)
+{
+    eNextState = Idle_State;
 
     return;
 }
 
-static void led_Task(void *pvParameters)
+static void fsm_Task(void *pvParameters)
 {
     (void) pvParameters;
-    TickType_t xLastWakeTime;
-
+    xADCArray adcValues;
     extern QueueHandle_t xAdcQueue;
-    uint32_t adcDataMsg = 0;
-
     const TickType_t xBlockTime = pdMS_TO_TICKS(200);
-
-    xLastWakeTime = xTaskGetTickCount();
 
     while(1)
     {
-        xQueueReceive( xAdcQueue, &adcDataMsg, xBlockTime);
-        PORTB |=  _BV(PORTB5);
+        xQueueReceive(xAdcQueue, &adcValues, xBlockTime);
+        avrSerialPrintf("\r\n%u, %u\r\n", adcValues.adc0, adcValues.adc1);
 
-        vTaskDelayUntil( &xLastWakeTime, (100 / portTICK_PERIOD_MS));
-        PORTB &= ~_BV(PORTB5);
-        vTaskDelayUntil( &xLastWakeTime, (400 / portTICK_PERIOD_MS));
+        eNewEvent = fsm_readEvent(&adcValues);
+        if((eNextState < last_State) && (eNewEvent < last_Event)&& (asStateMachine[eNextState].eStateMachineEvent == eNewEvent) && (asStateMachine[eNextState].pfStateMachineEvnentHandler != NULL))
+        {
+            eNextState = (*asStateMachine[eNextState].pfStateMachineEvnentHandler)();
+        }
+        else
+        {
+            //Invalid
+        }
     }
 
     return;
