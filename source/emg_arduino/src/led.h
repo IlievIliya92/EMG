@@ -10,10 +10,10 @@ extern "C" {
 
 /*********************************** DEFINES **********************************/
 
-/************************* INTERFACE FUNCTION PROTOTYPES **********************/
-
 /************************** INTERFACE DATA DEFINITIONS ************************/
-genericTask_t ledTask;
+
+/************************* INTERFACE FUNCTION PROTOTYPES **********************/
+genericTask_t *getLedTask(void);
 
 #ifdef __cplusplus
 }

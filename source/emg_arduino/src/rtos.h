@@ -9,6 +9,7 @@ extern "C" {
 #include "generic_t.h"
 
 /*********************************** DEFINES **********************************/
+#define TASKS   2
 
 /************************** INTERFACE DATA DEFINITIONS ************************/
 

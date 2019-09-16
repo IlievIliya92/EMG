@@ -19,6 +19,9 @@
 
 /********************************* LOCAL DATA *********************************/
 
+/******************************* INTERFACE DATA *******************************/
+
+
 /************************ LOCAL FUNCTIONS PROTOTYPES***************************/
 
 /******************************* LOCAL FUNCTIONS ******************************/
@@ -55,7 +58,7 @@ static void led_Task(void *pvParameters)
     return;
 }
 
-/******************************* INTERFACE DATA *******************************/
+/***************************** INTERFACE FUNCTIONS ****************************/
 genericTask_t led = {
     led_Init,
     led_Task,
@@ -65,3 +68,8 @@ genericTask_t led = {
     NULL,
     NULL
 };
+
+genericTask_t *getLedTask(void)
+{
+    return &led;
+}
