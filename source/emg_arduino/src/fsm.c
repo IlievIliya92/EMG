@@ -10,13 +10,11 @@
 #include "freeRTOS/lib_io/serial.h"
 #include "freeRTOS/lib_io/digitalAnalog.h"
 
-#include "led.h"
+#include "fsm.h"
 
 /******************************** LOCAL DEFINES *******************************/
 
 /******************************** TYPEDEFS ************************************/
-typedef eSystemState (*pfEventHandler)(void);
-
 typedef enum {
     Idle_State,
     last_State
@@ -25,6 +23,8 @@ typedef enum {
 typedef enum {
     last_Event
 } eSystemEvent;
+
+typedef eSystemState (*pfEventHandler)(void);
 
 typedef struct
 {
@@ -88,17 +88,17 @@ static void fsm_Task(void *pvParameters)
 }
 
 /***************************** INTERFACE FUNCTIONS ****************************/
-genericTask_t led = {
-    led_Init,
-    led_Task,
-    "LED TASK",
+genericTask_t fsm = {
+    fsm_Init,
+    fsm_Task,
+    "FSM TASK",
     256,
-    3,
+    2,
     NULL,
     NULL
 };
 
-genericTask_t *getLedTask(void)
+genericTask_t *getFsmTask(void)
 {
-    return &led;
+    return &fsm;
 }

@@ -3,7 +3,7 @@
 #include "freeRTOS/lib_io/serial.h"
 
 #include "adc.h"
-#include "led.h"
+#include "fsm.h"
 
 #include "rtos.h"
 #include "generic_t.h"
@@ -32,7 +32,7 @@ int main(void)
     genericTask_t *rtosTasks[TASKS];
 
     rtosTasks[0] = getAdcTask();
-    rtosTasks[1] = getLedTask();
+    rtosTasks[1] = getFsmTask();
 
     /* Starts all the tasks from Tasks array & starts the scheduler */
     rtos_start(rtosTasks);

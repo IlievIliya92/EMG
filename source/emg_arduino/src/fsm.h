@@ -1,5 +1,5 @@
-#ifndef _LED_H_
-#define _LED_H_
+#ifndef _FSM_H_
+#define _FSM_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -13,10 +13,10 @@ extern "C" {
 /************************** INTERFACE DATA DEFINITIONS ************************/
 
 /************************* INTERFACE FUNCTION PROTOTYPES **********************/
-genericTask_t *getLedTask(void);
+genericTask_t *getFsmTask(void);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* _LED_H_ */
+#endif /* _FSM_H_ */
