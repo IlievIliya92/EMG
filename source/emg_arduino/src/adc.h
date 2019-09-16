@@ -13,7 +13,7 @@ extern "C" {
 /************************** INTERFACE DATA DEFINITIONS ************************/
 
 /************************* INTERFACE FUNCTION PROTOTYPES **********************/
-genericTask_t *getAdcTask(void);
+genericTask_t adcTask;
 
 #ifdef __cplusplus
 }

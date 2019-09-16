@@ -15,11 +15,16 @@
 #define TX_QUEUE_LEN    10
 #define RX_QUEUE_LEN    10
 
+
 /******************************** GLOBALDATA *******************************/
 extern xComPortHandle xSerialPort;
 
 /********************************* LOCAL DATA *********************************/
-
+static genericTask_t *rtosTasks[TASKS] =
+{
+    &adcTask,
+    &ledTask
+};
 /******************************* LOCAL FUNCTIONS ******************************/
 
 /***************************** MAIN  ****************************/
@@ -27,12 +32,6 @@ int main(void) __attribute__((OS_main));
 int main(void)
 {
     xSerialPort = xSerialPortInitMinimal(USART0, BAUDRATE, TX_QUEUE_LEN, RX_QUEUE_LEN);
-
-    /* Tasks array */
-    genericTask_t *rtosTasks[TASKS];
-
-    rtosTasks[0] = getAdcTask();
-    rtosTasks[1] = getLedTask();
 
     /* Starts all the tasks from Tasks array & starts the scheduler */
     rtos_start(rtosTasks);

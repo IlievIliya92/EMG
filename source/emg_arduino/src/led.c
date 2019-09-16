@@ -68,8 +68,3 @@ genericTask_t led = {
     NULL,
     NULL
 };
-
-genericTask_t *getLedTask(void)
-{
-    return &led;
-}

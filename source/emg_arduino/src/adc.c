@@ -113,8 +113,3 @@ genericTask_t adc = {
     &adcValues,
     NULL
 };
-
-genericTask_t *getAdcTask(void)
-{
-    return &adc;
-}

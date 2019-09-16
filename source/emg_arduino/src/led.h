@@ -13,7 +13,7 @@ extern "C" {
 /************************** INTERFACE DATA DEFINITIONS ************************/
 
 /************************* INTERFACE FUNCTION PROTOTYPES **********************/
-genericTask_t *getLedTask(void);
+genericTask_t ledTask;
 
 #ifdef __cplusplus
 }
