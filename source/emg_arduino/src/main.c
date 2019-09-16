@@ -15,6 +15,7 @@
 #define TX_QUEUE_LEN    10
 #define RX_QUEUE_LEN    10
 
+#define TASKS           2
 
 /******************************** GLOBALDATA *******************************/
 extern xComPortHandle xSerialPort;
@@ -25,7 +26,9 @@ static genericTask_t *rtosTasks[TASKS] =
     &adcTask,
     &ledTask
 };
+
 /******************************* LOCAL FUNCTIONS ******************************/
+// --
 
 /***************************** MAIN  ****************************/
 int main(void) __attribute__((OS_main));

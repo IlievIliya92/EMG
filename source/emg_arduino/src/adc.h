@@ -10,9 +10,9 @@ extern "C" {
 
 /*********************************** DEFINES **********************************/
 
-/************************** INTERFACE DATA DEFINITIONS ************************/
-
 /************************* INTERFACE FUNCTION PROTOTYPES **********************/
+
+/************************** INTERFACE DATA DEFINITIONS ************************/
 genericTask_t adcTask;
 
 #ifdef __cplusplus

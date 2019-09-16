@@ -23,10 +23,7 @@ static xADCArray adcValues;
 /******************************* INTERFACE DATA *******************************/
 QueueHandle_t xAdcQueue = NULL;
 
-/************************ LOCAL FUNCTIONS PROTOTYPES***************************/
-
 /******************************* LOCAL FUNCTIONS ******************************/
-
 static void adc_Init(void)
 {
     /* Initialize analog inputs */
@@ -103,7 +100,7 @@ static void adc_Task(void *pvParameters)
     return;
 }
 
-/***************************** INTERFACE FUNCTIONS ****************************/
+/******************************* INTERFACE DATA *******************************/
 genericTask_t adc = {
     adc_Init,
     adc_Task,

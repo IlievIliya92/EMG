@@ -81,6 +81,3 @@ fi
 echo ""
 echo " All the required packages are installed.
      "
-echo " Run the application using the following command:
-     "
-echo "./emg -s <serial port>"
