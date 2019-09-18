@@ -23,12 +23,12 @@ extern "C" {
 /************** ANALOGUE *****************/
 typedef struct
 {
-    uint8_t   adc0;        // ADC value 0
-    uint8_t   adc1;        // ADC value 1
-    uint8_t   adc2;        // ADC value 2
-    uint8_t   adc3;        // ADC value 3
-    uint8_t   adc4;        // ADC value 4
-    uint8_t   adc5;        // ADC value 5
+    uint16_t   adc0;        // ADC value 0
+    uint16_t   adc1;        // ADC value 1
+    uint16_t   adc2;        // ADC value 2
+    uint16_t   adc3;        // ADC value 3
+    uint16_t   adc4;        // ADC value 4
+    uint16_t   adc5;        // ADC value 5
 } xADCArray, *pADCArray;
 
 typedef enum {
