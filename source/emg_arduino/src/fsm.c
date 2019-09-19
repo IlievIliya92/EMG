@@ -65,6 +65,7 @@ static eSystemEvent fsm_readEvent(xADCArray *adcValues)
 static void fsm_Init(void)
 {
     eNextState = Idle_State;
+
     start_PWM_hardware();
 
     return;
@@ -80,23 +81,19 @@ static void fsm_Task(void *pvParameters)
     xADCArray adcValues;
     extern QueueHandle_t xAdcQueue;
     const TickType_t xBlockTime = pdMS_TO_TICKS(200);
+
     uint16_t servoIn = DEFAULT_PULSE_WIDTH;
-    set_PWM_hardware(servoIn, servoIn);
-    uint16_t offset = 300;
-    uint16_t k = 1;
-    uint16_t value = 0;
+    uint16_t offset = MIN_PULSE_WIDTH;
 
     while(1)
     {
+        PORTB &= ~_BV(PORTB5);
         xQueueReceive(xAdcQueue, &adcValues, xBlockTime);
-//        avrSerialPrintf("\r\n%u, %u\r\n", adcValues.adc0, adcValues.adc1);
-        value = (adcValues.adc0 * k);
-        servoIn = offset + value;
-        avrSerialPrintf("\r\n%u, %u\r\n", servoIn, servoIn);
-//        set_PWM_hardware(MIN_PULSE_WIDTH, MIN_PULSE_WIDTH);
-//        vTaskDelayUntil( &xLastWakeTime, (600 / portTICK_PERIOD_MS));
+        avrSerialPrintf("\r\n%u, %u\r\n", adcValues.adc0, adcValues.adc1);
+        servoIn = offset + adcValues.adc0;
         set_PWM_hardware(servoIn, servoIn);
-        vTaskDelayUntil( &xLastWakeTime, (1 / portTICK_PERIOD_MS));
+        vTaskDelayUntil( &xLastWakeTime, (10 / portTICK_PERIOD_MS));
+
         eNewEvent = fsm_readEvent(&adcValues);
         if((eNextState < last_State) && (eNewEvent < last_Event)&& (asStateMachine[eNextState].eStateMachineEvent == eNewEvent) && (asStateMachine[eNextState].pfStateMachineEvnentHandler != NULL))
         {
