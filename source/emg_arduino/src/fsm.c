@@ -9,10 +9,18 @@
 /* serial interface include file. */
 #include "freeRTOS/lib_io/serial.h"
 #include "freeRTOS/lib_io/digitalAnalog.h"
+#include "freeRTOS/lib_io/servoPWM.h"
 
 #include "fsm.h"
 
 /******************************** LOCAL DEFINES *******************************/
+#define SERVO_K 2.841666667
+
+#define MIN_PULSE_WIDTH       300     // the shortest pulse sent to a servo
+#define MAX_PULSE_WIDTH      1180     // the longest pulse sent to a servo
+
+#define INTERVAL_PULSE_WIDTH (MAX_PULSE_WIDTH - MIN_PULSE_WIDTH)
+#define DEFAULT_PULSE_WIDTH  300     // default pulse width when servo is attached
 
 /******************************** TYPEDEFS ************************************/
 typedef enum {
@@ -57,6 +65,7 @@ static eSystemEvent fsm_readEvent(xADCArray *adcValues)
 static void fsm_Init(void)
 {
     eNextState = Idle_State;
+    start_PWM_hardware();
 
     return;
 }
@@ -64,15 +73,30 @@ static void fsm_Init(void)
 static void fsm_Task(void *pvParameters)
 {
     (void) pvParameters;
+
+    TickType_t xLastWakeTime;
+    xLastWakeTime = xTaskGetTickCount();
+
     xADCArray adcValues;
     extern QueueHandle_t xAdcQueue;
     const TickType_t xBlockTime = pdMS_TO_TICKS(200);
+    uint16_t servoIn = DEFAULT_PULSE_WIDTH;
+    set_PWM_hardware(servoIn, servoIn);
+    uint16_t offset = 300;
+    uint16_t k = 1;
+    uint16_t value = 0;
 
     while(1)
     {
         xQueueReceive(xAdcQueue, &adcValues, xBlockTime);
-        avrSerialPrintf("\r\n%u, %u\r\n", adcValues.adc0, adcValues.adc1);
-
+//        avrSerialPrintf("\r\n%u, %u\r\n", adcValues.adc0, adcValues.adc1);
+        value = (adcValues.adc0 * k);
+        servoIn = offset + value;
+        avrSerialPrintf("\r\n%u, %u\r\n", servoIn, servoIn);
+//        set_PWM_hardware(MIN_PULSE_WIDTH, MIN_PULSE_WIDTH);
+//        vTaskDelayUntil( &xLastWakeTime, (600 / portTICK_PERIOD_MS));
+        set_PWM_hardware(servoIn, servoIn);
+        vTaskDelayUntil( &xLastWakeTime, (1 / portTICK_PERIOD_MS));
         eNewEvent = fsm_readEvent(&adcValues);
         if((eNextState < last_State) && (eNewEvent < last_Event)&& (asStateMachine[eNextState].eStateMachineEvent == eNewEvent) && (asStateMachine[eNextState].pfStateMachineEvnentHandler != NULL))
         {
@@ -86,6 +110,10 @@ static void fsm_Task(void *pvParameters)
 
     return;
 }
+
+
+
+
 
 /***************************** INTERFACE FUNCTIONS ****************************/
 genericTask_t fsm = {

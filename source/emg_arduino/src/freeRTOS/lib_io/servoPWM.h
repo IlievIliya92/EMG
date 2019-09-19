@@ -24,6 +24,8 @@
 extern "C" {
 #endif
 
+#define portUSE_TIMER0_PWM
+
 #if defined( portUSE_TIMER0_PWM )         /* Hardware constants for PWM Timer0. */
 
 	#define pwmBASE_HZ                              ( ( uint16_t ) 50 )

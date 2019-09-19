@@ -31,8 +31,6 @@ void start_PWM_hardware()
     taskENTER_CRITICAL();
 
 #if defined( portUSE_TIMER0_PWM )
-#warning "Timer0 used for PWM."
-
     // OutputHZ = configCPU_CLOCK_HZ/(pwmCLOCK_PRESCALER*510) = 42.352Hz with pwmPRESCALE_1024 Phase Correct PWM
     // This calculation result applies to 22118400Hz.
     pwmTCCRb = pwmPRESCALE_1024;                            // always counts to 0xFF
@@ -48,8 +46,6 @@ void start_PWM_hardware()
     pwmTCCRa = pwmFAST_NONINVERTED_a; // turn on the PWM...
 
 #elif defined( portUSE_TIMER1_PWM )
-#warning "Timer1 used for PWM."
-
     pwmTCCRb = pwmFAST_NONINVERTED_b | pwmPRESCALE_8;
 
     /* pwmIRC1 = configCPU_CLOCK_HZ/(pwmCLOCK_PRESCALER*pwmBASE_HZ) - 1 = 55,295 with pwmPRESCALE_8 */
