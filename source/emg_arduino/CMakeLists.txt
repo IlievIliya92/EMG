@@ -15,8 +15,17 @@ project("Avr Project")
 #set(PORT /dev/ttyACM0)
 #set(PROG_TYPE arduino)
 
+set(F_CPU 16000000UL)
+set(BAUD 9600)
+set(MCUFOS __AVR_ATmega328P__)
 set(MCU atmega328p)
 
+# Pass defines to compiler
+add_definitions(
+    -DF_CPU=${F_CPU}
+    -DBAUD=${BAUD}
+    -D${MCUFOS}
+)
 set(CMAKE_EXE_LINKER_FLAGS -mmcu=${MCU})
 
 add_compile_options(
@@ -25,10 +34,10 @@ add_compile_options(
     -Os
     -Wall
     -Wno-main
-#    -Wundef
-#    -Wstrict-prototypes
-#    -Werror
-#    -Wfatal-errors
+    -Wundef
+    -Wstrict-prototypes
+    -Werror
+    -Wfatal-errors
     -Wl,--relax,--gc-sections
     -g
     -gdwarf-2

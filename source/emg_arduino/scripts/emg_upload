@@ -40,4 +40,4 @@ fi
 
 cd ${EMG_PROJECT_ROOT}/Debug
 avrdude -patmega328p -carduino -P$1 -D -Uflash:w:avr.hex:i
-minicom -D $1
+#minicom -D $1

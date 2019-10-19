@@ -12,9 +12,6 @@
 #include "freeRTOS/lib_io/digitalAnalog.h"
 
 /******************************** LOCAL DEFINES *******************************/
-#define BAUDRATE        115200
-#define TX_QUEUE_LEN    10
-#define RX_QUEUE_LEN    10
 
 /******************************** GLOBALDATA *******************************/
 extern xComPortHandle xSerialPort;
@@ -27,7 +24,7 @@ extern xComPortHandle xSerialPort;
 int main(void) __attribute__((OS_main));
 int main(void)
 {
-    xSerialPort = xSerialPortInitMinimal(USART0, BAUDRATE, TX_QUEUE_LEN, RX_QUEUE_LEN);
+    xSerialPort = xSerialPortInitMinimal(USART0, BAUD, portSERIAL_BUFFER_TX, portSERIAL_BUFFER_RX);
 
     /* Tasks array */
     genericTask_t *rtosTasks[TASKS];
@@ -40,3 +37,4 @@ int main(void)
 
     avrSerialxPrint_P(&xSerialPort, PSTR("\r\n\n Failed to start the emg application!\r\n"));
 }
+

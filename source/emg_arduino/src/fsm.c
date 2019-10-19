@@ -89,7 +89,7 @@ static void fsm_Task(void *pvParameters)
     {
         PORTB &= ~_BV(PORTB5);
         xQueueReceive(xAdcQueue, &adcValues, xBlockTime);
-        avrSerialPrintf("\r\n%u, %u\r\n", adcValues.adc0, adcValues.adc1);
+        //avrSerialPrintf("\r\n%u, %u\r\n", adcValues.adc0, adcValues.adc1);
         servoIn = offset + adcValues.adc0;
         set_PWM_hardware(servoIn, servoIn);
         vTaskDelayUntil( &xLastWakeTime, (10 / portTICK_PERIOD_MS));

@@ -11,7 +11,7 @@
 
 #include "adc.h"
 /******************************** LOCAL DEFINES *******************************/
-
+#define CMD_SIZE 10
 
 /******************************** GLOBALDATA *******************************/
 extern xComPortHandle xSerialPort;
@@ -24,6 +24,29 @@ static SemaphoreHandle_t xCmdSemaphore;
 /************************ LOCAL FUNCTIONS PROTOTYPES***************************/
 
 /******************************* LOCAL FUNCTIONS ******************************/
+static void cmd_interpGetCmd(uint8_t *buff, uint8_t len)
+{
+    uint8_t c;
+    uint8_t i = 0;
+
+    for (;;) {
+        while (!xSerialGetChar(&xSerialPort, &c))
+            vTaskDelay(1);
+
+        if (c == '\r') break;
+        if ((c == '\b') && i) {
+            --i;
+            xSerialPutChar( &xSerialPort, c );
+            continue;
+        }
+        if (c >= ' ' && i < len - 1) {  /* Visible chars */
+            buff[i++] = c;
+            xSerialPutChar( &xSerialPort, c );
+        }
+    }
+    buff[i] = 0;
+    xSerialPrint((uint8_t *)"\r\n");
+}
 
 static void cmd_interp_Init(void)
 {
@@ -38,6 +61,9 @@ static void cmd_interp(void)
     {
         if( xSemaphoreTake(xCmdSemaphore, (TickType_t)10) == pdTRUE)
         {
+            uint8_t cdm_buff[CMD_SIZE];
+            cmd_interpGetCmd(cdm_buff, CMD_SIZE);
+            xSerialPrint(cdm_buff);
 
             xSemaphoreGive(xCmdSemaphore);
         }
