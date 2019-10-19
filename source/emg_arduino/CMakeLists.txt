@@ -25,10 +25,10 @@ add_compile_options(
     -Os
     -Wall
     -Wno-main
-    -Wundef
-    -Wstrict-prototypes
-    -Werror
-    -Wfatal-errors
+#    -Wundef
+#    -Wstrict-prototypes
+#    -Werror
+#    -Wfatal-errors
     -Wl,--relax,--gc-sections
     -g
     -gdwarf-2
@@ -46,7 +46,9 @@ include_directories("src")
 file(GLOB_RECURSE SOURCES "src/*.c")
 
 add_executable(${APP_NAME} ${SOURCES})
+target_link_libraries(${APP_NAME} m)
 set_target_properties(${APP_NAME} PROPERTIES OUTPUT_NAME ${APP_NAME}.elf)
+
 
 add_custom_target(strip ALL ${STRIP} ${APP_NAME}.elf DEPENDS ${APP_NAME})
 add_custom_target(hex ALL  ${OBJCOPY} -j .text -j .data -O ihex ${APP_NAME}.elf ${APP_NAME}.hex DEPENDS strip)

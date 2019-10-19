@@ -4,6 +4,7 @@
 
 #include "adc.h"
 #include "fsm.h"
+#include "cmd_interp.h"
 
 #include "rtos.h"
 #include "generic_t.h"
@@ -33,7 +34,7 @@ int main(void)
 
     rtosTasks[0] = getAdcTask();
     rtosTasks[1] = getFsmTask();
-
+    rtosTasks[2] = getCmdInterpTask();
     /* Starts all the tasks from Tasks array & starts the scheduler */
     rtos_start(rtosTasks);
 

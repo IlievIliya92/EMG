@@ -1,5 +1,5 @@
-#ifndef _RTOS_H_
-#define _RTOS_H_
+#ifndef _CMD_INTERP_H_
+#define _CMD_INTERP_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -9,15 +9,14 @@ extern "C" {
 #include "generic_t.h"
 
 /*********************************** DEFINES **********************************/
-#define TASKS   3
 
 /************************** INTERFACE DATA DEFINITIONS ************************/
 
 /************************* INTERFACE FUNCTION PROTOTYPES **********************/
-void rtos_start(genericTask_t *task[]);
+genericTask_t *getCmdInterpTask(void);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* _RTOS_H_ */
+#endif /* _CMD_INTERP_H_ */
